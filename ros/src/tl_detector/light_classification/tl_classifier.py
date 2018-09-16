@@ -5,12 +5,10 @@ import numpy as np
 
 class TLClassifier(object):
     def __init__(self):
-        #TODO load classifier
         pass
 
-    def get_classification(self, image):
-		# Convert input image to HSV
-		img=cv2.imread("img.bmp")
+    def get_classification(self, img):
+        # Convert input image to HSV
         img_hsv=cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # lower mask (0-10)
@@ -29,13 +27,12 @@ class TLClassifier(object):
         # set my output img to zero everywhere except my mask
         output_img = img.copy()
         output_img[np.where(mask==0)] = 0
+        output_img = cv2.cvtColor(output_img, cv2.COLOR_BGR2GRAY)
+        # Use the Hough transform to detect circles in the images
+        red_circles = cv2.HoughCircles(output_img, cv2.HOUGH_GRADIENT, 1, output_img.shape[0] / 8.0, 100, 20, 20, 1)
 
-		# Use the Hough transform to detect circles in the images
-		red_circles = cv2.HoughCircles(output_img, cv2.HOUGH_GRADIENT, 1, output_img.shape[0] / 8.0, 100, 20, 20, 1)
-
-		# Loop over all detected circles and outline them on the original image
-		if red_circles is not None:
-			return TrafficLight.RED
-
-		else:
-			return TrafficLight.UNKNOWN
+        # Loop over all detected circles and outline them on the original image
+        if red_circles is not None:
+            TrafficLight.RED
+        else:
+            TrafficLight.UNKNOWN

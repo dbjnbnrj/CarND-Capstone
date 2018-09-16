@@ -68,7 +68,7 @@ class WaypointUpdater(object):
             if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx):
                 lane.waypoints = base_waypoints
             else:
-                lane.waypoints = self.decelerate_waypoints(base_waypoints, closest_idx)
+                lane.waypoints = self.decelerate_waypoints(base_waypoints, closest_waypoint_idx)
         return lane
 
     def decelerate_waypoints(self, waypoints, closest_idx):
